@@ -1,0 +1,24 @@
+spring:
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    url: jdbc:h2:mem:test
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+      format-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+
+app:
+  jwt-access-secret: tooda-secret-dev
+  jwt-refresh-secret: tooda-refresh-secret-dev
+  jwt-access-expire-sec: 3600
+  jwt-refresh-expire-sec: 31536000
+
