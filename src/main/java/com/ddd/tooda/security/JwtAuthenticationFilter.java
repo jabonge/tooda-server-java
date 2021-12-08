@@ -1,5 +1,6 @@
 package com.ddd.tooda.security;
 
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,13 +29,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String token = getJwtFromRequest(request);
-
-            if(StringUtils.hasText(token) && tokenProvider.validateAccessToken(token)) {
-                Long userId = tokenProvider.getUserId(token);
+        if(StringUtils.hasText(token)) {
+            try {
+                Long userId = tokenProvider.getUserIdInAccessToken(token);
                 UserDetails userDetails = customUserDetailService.loadUserById(userId);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (JwtException jwtException) {
+                log.error(jwtException.getMessage());
             }
+        }
+
         filterChain.doFilter(request,response);
     }
 

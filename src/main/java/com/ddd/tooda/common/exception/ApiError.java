@@ -1,4 +1,4 @@
-package com.ddd.tooda.common;
+package com.ddd.tooda.common.exception;
 
 import lombok.Getter;
 import lombok.ToString;

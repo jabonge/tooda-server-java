@@ -18,10 +18,10 @@ public class TokenProvider {
 
 
     public TokenProvider(AppProperties appProperties) {
-        this.jwtAccessSecret = appProperties.getJwtConfig().getJwtAccessSecret();
-        this.jwtRefreshSecret = appProperties.getJwtConfig().getJwtRefreshSecret();
-        this.jwtAccessExpireMillisecond = appProperties.getJwtConfig().getJwtAccessExpireSec() * 1000;
-        this.jwtRefreshExpireMillisecond = appProperties.getJwtConfig().getJwtRefreshExpireSec() * 1000;
+        this.jwtAccessSecret = appProperties.getJwtConfig().getAccessSecret();
+        this.jwtRefreshSecret = appProperties.getJwtConfig().getRefreshSecret();
+        this.jwtAccessExpireMillisecond = appProperties.getJwtConfig().getAccessExpireSec() * 1000;
+        this.jwtRefreshExpireMillisecond = appProperties.getJwtConfig().getRefreshExpireSec() * 1000;
     }
 
     private String createToken(Long userId, int expireTime, String secretKey) {
@@ -35,24 +35,11 @@ public class TokenProvider {
                 .compact();
     }
 
-    private boolean validateToken(String token,String secretKey) {
-        try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
-        } catch (SignatureException ex) {
-            log.error("Invalid JWT signature");
-        } catch (MalformedJwtException ex) {
-            log.error("Invalid JWT token");
-        } catch (ExpiredJwtException ex) {
-            log.error("Expired JWT token");
-        } catch (UnsupportedJwtException ex) {
-            log.error("Unsupported JWT token");
-        } catch (IllegalArgumentException ex) {
-            log.error("JWT claims string is empty.");
-        }
-        return false;
-    }
+    private Long getUserIdInToken(String token, String secretKey) {
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        return Long.parseLong(claims.getSubject());
 
+    }
 
     public String createAccessToken(Long userId) {
         return createToken(userId,jwtAccessExpireMillisecond,jwtAccessSecret);
@@ -63,19 +50,12 @@ public class TokenProvider {
     }
 
 
-    public boolean validateAccessToken(String token) {
-        return validateToken(token,jwtAccessSecret);
+    public Long getUserIdInAccessToken(String token) {
+        return getUserIdInToken(token,jwtAccessSecret);
     }
 
-    public boolean validateRefreshToken(String token) {
-        return validateToken(token,jwtRefreshSecret);
+    public Long getUserIdInRefreshToken(String token) {
+        return getUserIdInToken(token,jwtRefreshSecret);
     }
 
-    public Long getUserId(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtAccessSecret)
-                .parseClaimsJws(token)
-                .getBody();
-        return Long.parseLong(claims.getSubject());
-    }
 }
