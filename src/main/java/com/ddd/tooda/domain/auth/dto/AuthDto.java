@@ -1,16 +1,13 @@
 package com.ddd.tooda.domain.auth.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 public class AuthDto {
 
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class SignUpResponse {
         private String accessToken;
         private String refreshToken;
@@ -18,7 +15,7 @@ public class AuthDto {
 
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class AccessTokenResponse {
         private String accessToken;
     }
@@ -26,7 +23,7 @@ public class AuthDto {
 
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @EqualsAndHashCode
     public static class SignUpRequest {
         @Length(min = 36, max = 40, message = "올바른 DeviceId가 아닙니다.")
@@ -35,7 +32,7 @@ public class AuthDto {
 
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @EqualsAndHashCode
     public static class IssueAccessTokenRequest {
         private String refreshToken;

@@ -36,16 +36,19 @@ public class Diary extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE })
     private User user;
 
-    @OneToMany(cascade = { CascadeType.ALL },mappedBy = "diary")
+    @OneToMany(cascade = { CascadeType.PERSIST },mappedBy = "diary", orphanRemoval = true)
     private List<DiaryImage> images = new ArrayList<>();
 
-    @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "diary")
+    @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "diary", orphanRemoval = true)
     private List<DiaryLink> links = new ArrayList<>();
 
-    @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "diary")
+    @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "diary", orphanRemoval = true)
     private List<DiaryStock> stocks = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY)
+    private MonthlyDiaryMeta monthlyDiaryMeta;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "diary_hashtag",
         joinColumns= @JoinColumn(name = "diary_id"),
         inverseJoinColumns = @JoinColumn(name = "hashtag_id")
