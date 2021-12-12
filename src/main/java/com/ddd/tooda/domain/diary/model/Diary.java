@@ -19,6 +19,18 @@ import java.util.List;
 })
 public class Diary extends BaseEntity {
 
+    @Builder
+    public Diary(String title, String content, Sticker sticker, List<DiaryImage> images, List<DiaryStock> stocks, List<DiaryLink> links, List<HashTag> hashtags, Long userId) {
+        this.title = title;
+        this.content = content;
+        this.sticker = sticker;
+        this.images = images;
+        this.links = links;
+        this.hashTags = hashtags;
+        this.stocks = stocks;
+        this.user = new User(userId,null);
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -54,12 +66,6 @@ public class Diary extends BaseEntity {
         inverseJoinColumns = @JoinColumn(name = "hashtag_id")
     )
     private List<HashTag> hashTags = new ArrayList<>();
-
-
-
-
-
-
 
 
 }
