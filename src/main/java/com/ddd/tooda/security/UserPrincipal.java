@@ -1,10 +1,12 @@
 package com.ddd.tooda.security;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Getter
 public class UserPrincipal implements UserDetails {
     private final Long id;
 
