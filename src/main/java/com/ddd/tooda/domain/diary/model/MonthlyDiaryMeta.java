@@ -2,9 +2,7 @@ package com.ddd.tooda.domain.diary.model;
 
 import com.ddd.tooda.common.BaseEntity;
 import com.ddd.tooda.domain.user.model.User;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,19 +17,41 @@ public class MonthlyDiaryMeta extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "UNSIGNED INT")
+    @Column
     private Integer year;
 
-    @Column(columnDefinition = "UNSIGNED INT")
+    @Column
     private Integer month;
 
-    @Column(columnDefinition = "UNSIGNED INT")
-    private Integer totalCount = 0;
+    @Column
+    private Integer totalCount = 1;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "monthlyDiaryMeta", cascade = { CascadeType.PERSIST })
-    List<Diary> diarys = new ArrayList<>();
+    @OneToMany(mappedBy = "monthlyDiaryMeta", cascade = {CascadeType.PERSIST})
+    private List<Diary> diarys = new ArrayList<>();
+
+    @Builder
+    public MonthlyDiaryMeta(Integer year, Integer month, Long userId) {
+        this.year = year;
+        this.month = month;
+        this.user = new User(userId);
+    }
+
+    public void increaseTotalCount() {
+        this.totalCount++;
+    }
+    public void decreaseTotalCount() {
+        if (this.totalCount > 0) {
+            this.totalCount--;
+        }
+    }
+
+    public void addDiary(Diary diary) {
+        diarys.add(diary);
+        diary.setMonthlyDiaryMeta(this);
+    }
 
 }

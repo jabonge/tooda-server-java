@@ -36,4 +36,8 @@ public class DiaryStock {
     @JoinColumn(name = "diary_id")
     Diary diary;
 
+    void setDiary(Diary diary){
+        this.diary = diary;
+    }
+
 }

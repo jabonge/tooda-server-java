@@ -46,7 +46,7 @@ public class OpenGraphUtil {
             String spliceDescription = description.getValue();
 
             if (spliceDescription != null && spliceDescription.length() > 30) {
-                spliceDescription.substring(0,30);
+                spliceDescription = spliceDescription.substring(0,30) + "...";
             }
 
             return OGResponse.builder()

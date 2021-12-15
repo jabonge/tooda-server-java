@@ -10,7 +10,6 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DiaryImage {
     @Id
@@ -20,7 +19,16 @@ public class DiaryImage {
     @Column(nullable = false)
     String image;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diary_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     Diary diary;
+
+    public DiaryImage(String image) {
+        this.image = image;
+    }
+
+    void setDiary(Diary diary){
+        this.diary = diary;
+    }
+
+
 }
