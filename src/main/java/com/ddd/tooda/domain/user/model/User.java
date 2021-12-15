@@ -26,6 +26,9 @@ public class User extends BaseEntity {
     @Builder
     public User(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public User(Long id) {
         this.id = id;
     }
 
