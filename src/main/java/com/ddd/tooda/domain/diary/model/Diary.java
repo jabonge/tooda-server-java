@@ -9,8 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -39,13 +40,13 @@ public class Diary extends BaseEntity {
     private User user;
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "diary", orphanRemoval = true)
-    private List<DiaryImage> images = new ArrayList<>();
+    private Set<DiaryImage> images = new HashSet<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "diary", orphanRemoval = true)
-    private List<DiaryLink> links = new ArrayList<>();
+    private Set<DiaryLink> links = new HashSet<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "diary", orphanRemoval = true)
-    private List<DiaryStock> stocks = new ArrayList<>();
+    private Set<DiaryStock> stocks = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "monthly_diary_meta_id")
@@ -54,11 +55,11 @@ public class Diary extends BaseEntity {
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "diary_hashtag", joinColumns = @JoinColumn(name = "diary_id"), inverseJoinColumns =
     @JoinColumn(name = "hashtag_id"))
-    private List<HashTag> hashTags = new ArrayList<>();
+    private Set<HashTag> hashTags = new HashSet<>();
 
     @Builder
     public Diary(String title, String content, Sticker sticker, List<DiaryImage> images, List<DiaryStock> stocks,
-                 List<DiaryLink> links, List<HashTag> hashtags, Long userId) {
+                 List<DiaryLink> links, Long userId) {
         this.title = title;
         this.content = content;
         this.sticker = sticker;
@@ -73,18 +74,25 @@ public class Diary extends BaseEntity {
     }
 
     private void setImages(List<DiaryImage> images) {
-        images.stream().forEach(v -> v.setDiary(this));
-        this.images = images;
+        if (images != null) {
+            images.forEach(v -> v.setDiary(this));
+            this.images = new HashSet<>(images);
+        }
     }
 
     private void setStocks(List<DiaryStock> stocks) {
-        stocks.stream().forEach(v -> v.setDiary(this));
-        this.stocks = stocks;
+        if(stocks != null) {
+            stocks.forEach(v -> v.setDiary(this));
+            this.stocks = new HashSet<>(stocks);
+        }
+
     }
 
     private void setLinks(List<DiaryLink> links) {
-        links.stream().forEach(v -> v.setDiary(this));
-        this.links = links;
+        if(links != null) {
+            links.forEach(v -> v.setDiary(this));
+            this.links = new HashSet<>(links);
+        }
     }
 
 
