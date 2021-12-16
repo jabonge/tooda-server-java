@@ -21,8 +21,8 @@ public class MonthlyDiaryMetaDto {
             this.year = meta.getYear();
             this.month = meta.getMonth();
             this.totalCount = meta.getTotalCount();
-            if (!meta.getDiarys().isEmpty()) {
-                this.stickers = meta.getDiarys().stream().map(
+            if (!meta.getDiaries().isEmpty()) {
+                this.stickers = meta.getDiaries().stream().map(
                         diary -> diary.getSticker().getName()
                 ).collect(Collectors.toList());
             }
