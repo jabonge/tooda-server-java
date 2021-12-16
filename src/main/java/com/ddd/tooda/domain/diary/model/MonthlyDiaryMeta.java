@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@EqualsAndHashCode(of = {"id","year","month"},callSuper = false)
 @Getter
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MonthlyDiaryMeta extends BaseEntity {
     @Id
@@ -24,14 +26,14 @@ public class MonthlyDiaryMeta extends BaseEntity {
     private Integer month;
 
     @Column
-    private Integer totalCount = 1;
+    private Integer totalCount = 0;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "monthlyDiaryMeta", cascade = {CascadeType.PERSIST})
-    private List<Diary> diarys = new ArrayList<>();
+    private List<Diary> diaries = new ArrayList<>();
 
     @Builder
     public MonthlyDiaryMeta(Integer year, Integer month, Long userId) {
@@ -50,7 +52,7 @@ public class MonthlyDiaryMeta extends BaseEntity {
     }
 
     public void addDiary(Diary diary) {
-        diarys.add(diary);
+        diaries.add(diary);
         diary.setMonthlyDiaryMeta(this);
     }
 
