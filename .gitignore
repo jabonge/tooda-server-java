@@ -37,3 +37,6 @@ application-*.yml
 
 ### VS Code ###
 .vscode/
+
+### Docker ###
+docker/
