@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +56,7 @@ public class Diary extends BaseEntity {
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "diary_hashtag", joinColumns = @JoinColumn(name = "diary_id"), inverseJoinColumns =
     @JoinColumn(name = "hashtag_id"))
-    private Set<HashTag> hashTags = new HashSet<>();
+    private List<HashTag> hashTags = new ArrayList<>();
 
     @Builder
     public Diary(String title, String content, Sticker sticker, List<DiaryImage> images, List<DiaryStock> stocks,
@@ -71,6 +72,9 @@ public class Diary extends BaseEntity {
 
     public void setMonthlyDiaryMeta(MonthlyDiaryMeta monthlyDiaryMeta){
         this.monthlyDiaryMeta = monthlyDiaryMeta;
+    }
+    public void setHashTags(List<HashTag> hashTags) {
+        this.hashTags = hashTags;
     }
 
     private void setImages(List<DiaryImage> images) {

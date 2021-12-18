@@ -1,12 +1,12 @@
 package com.ddd.tooda.domain.diary.dto;
 
-import com.ddd.tooda.domain.diary.model.Diary;
-import com.ddd.tooda.domain.diary.model.DiaryImage;
-import com.ddd.tooda.domain.diary.model.DiaryLink;
-import com.ddd.tooda.domain.diary.model.DiaryStock;
+import com.ddd.tooda.common.NoOffsetPaginationDto;
+import com.ddd.tooda.domain.diary.model.*;
 import com.ddd.tooda.domain.diary.model.type.ChangeType;
 import com.ddd.tooda.domain.diary.model.type.Sticker;
+import com.ddd.tooda.util.HashtagUtil;
 import com.ddd.tooda.util.OpenGraphUtil;
+import com.ddd.tooda.util.OpenGraphUtil.OGResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -39,12 +41,16 @@ public class DiaryDto {
 
         private List<DiaryStockDto> stocks = new ArrayList<>();
 
+        public List<String> getHashTags() {
+            return HashtagUtil.findHashtags(this.content);
+        }
+
         public Diary toEntity(Long userId) {
-            List<DiaryStock> stocks = this.stocks.stream().map(v -> v.toEntity()).collect(Collectors.toList());
-            List<DiaryImage> images = this.images.stream().map(v -> new DiaryImage(v)).collect(Collectors.toList());
+            List<DiaryStock> stocks = this.stocks.stream().map(DiaryStockDto::toEntity).collect(Collectors.toList());
+            List<DiaryImage> images = this.images.stream().map(DiaryImage::new).collect(Collectors.toList());
             List<DiaryLink> links =
-                    this.links.stream().map(v -> OpenGraphUtil.getOgInfo(v))
-                            .filter(Objects::nonNull).map(o -> o.toEntity()).collect(Collectors.toList());
+                    this.links.stream().map(OpenGraphUtil::getOgInfo)
+                            .filter(Objects::nonNull).map(OGResponse::toEntity).collect(Collectors.toList());
 
             return Diary.builder()
                     .title(title)
@@ -103,10 +109,32 @@ public class DiaryDto {
     @AllArgsConstructor
     public static class DiaryImageDto {
         private Long id;
+        @NotBlank
         private String image;
 
         public static DiaryImageDto from(DiaryImage image) {
             return new DiaryImageDto(image.getId(), image.getImage());
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    public static class FindAllByDateRequest {
+        @NotNull
+        private Integer year;
+        @NotNull
+        private Integer month;
+        private NoOffsetPaginationDto noOffsetPaginationDto;
+
+
+        public LocalDateTime getStartTime() {
+            return LocalDate.of(year, month, 1).atStartOfDay().plusHours(9);
+        }
+
+        public LocalDateTime getEndTime() {
+            LocalDate startDate = getStartTime().toLocalDate();
+            return startDate.withDayOfMonth(startDate.lengthOfMonth()).atStartOfDay().plusHours(9);
         }
     }
 

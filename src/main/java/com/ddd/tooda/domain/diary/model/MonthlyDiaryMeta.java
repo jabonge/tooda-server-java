@@ -32,7 +32,7 @@ public class MonthlyDiaryMeta extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "monthlyDiaryMeta", cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "monthlyDiaryMeta")
     private List<Diary> diaries = new ArrayList<>();
 
     @Builder

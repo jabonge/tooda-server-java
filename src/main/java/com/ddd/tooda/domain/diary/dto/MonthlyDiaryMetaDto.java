@@ -10,22 +10,22 @@ import java.util.stream.Collectors;
 public class MonthlyDiaryMetaDto {
 
     @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     public static class MonthlyDiaryMetaResponse {
         private Integer year;
         private Integer month;
         private Integer totalCount;
-        private List<String> stickers = new ArrayList<>();
+//        private List<String> stickers = new ArrayList<>();
 
-        public MonthlyDiaryMetaResponse(MonthlyDiaryMeta meta) {
-            this.year = meta.getYear();
-            this.month = meta.getMonth();
-            this.totalCount = meta.getTotalCount();
-            if (!meta.getDiaries().isEmpty()) {
-                this.stickers = meta.getDiaries().stream().map(
-                        diary -> diary.getSticker().getName()
-                ).collect(Collectors.toList());
-            }
+        public static MonthlyDiaryMetaResponse from(MonthlyDiaryMeta meta) {
+
+            return new MonthlyDiaryMetaResponse(meta.getYear(), meta.getMonth(), meta.getTotalCount());
+
+//            if (!meta.getDiaries().isEmpty()) {
+//                this.stickers = meta.getDiaries().stream().map(
+//                        diary -> diary.getSticker().getName()
+//                ).collect(Collectors.toList());
+//            }
         }
 
     }
