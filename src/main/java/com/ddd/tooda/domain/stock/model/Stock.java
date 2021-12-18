@@ -1,6 +1,7 @@
 package com.ddd.tooda.domain.stock.model;
 
 
+import com.ddd.tooda.domain.stock.dto.StockDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class Stock {
     @Column(nullable = false)
     String name;
 
-    @JsonIgnore
     @Column()
     Long marketCap;
+
 }
