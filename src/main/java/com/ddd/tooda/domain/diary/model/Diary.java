@@ -36,7 +36,7 @@ public class Diary extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Sticker sticker;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

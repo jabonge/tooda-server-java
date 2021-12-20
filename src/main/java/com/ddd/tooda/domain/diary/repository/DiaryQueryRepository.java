@@ -2,9 +2,11 @@ package com.ddd.tooda.domain.diary.repository;
 
 import com.ddd.tooda.common.NoOffsetPaginationDto;
 import com.ddd.tooda.domain.diary.dto.DiaryDto;
+import com.ddd.tooda.domain.diary.dto.MonthlyDiaryMetaDto.MonthlyDiaryMetaResponse;
+import com.ddd.tooda.domain.diary.dto.MonthlyDiaryMetaRow;
+import com.ddd.tooda.domain.diary.dto.MonthlyDiaryMetaRowMapper;
 import com.ddd.tooda.domain.diary.model.Diary;
 import com.ddd.tooda.domain.diary.model.HashTag;
-import com.ddd.tooda.domain.diary.model.MonthlyDiaryMeta;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -66,9 +68,19 @@ public class DiaryQueryRepository {
                 .fetch();
     }
 
-    public List<MonthlyDiaryMeta> findMonthlyDiaryMetasByYear(Long userId, Integer year) {
-
-        return null;
+    public List<MonthlyDiaryMetaResponse> findMonthlyDiaryMetasByYear(Long userId, Integer year) {
+        String sql = "select * from monthly_diary_meta as m " +
+                "inner join (select d1.sticker as sticker, d1.monthly_diary_meta_id as monthly_diary_meta_id from " +
+                "diary as d1 " +
+                "where id in (select d2_id from (select d2.id as d2_id, rank() over (partition by d2" +
+                ".monthly_diary_meta_id order by d2.id desc) " +
+                "as r " +
+                "from diary as d2 where d2.sticker is not null and d2.user_id = ?) as sub3 where sub3.r <= 3)) as " +
+                "sub1 on " +
+                "sub1.monthly_diary_meta_id = m.id " +
+                "where m.year = ?";
+        List<MonthlyDiaryMetaRow> rows = jdbcTemplate.query(sql, new MonthlyDiaryMetaRowMapper(), userId, year);
+        return MonthlyDiaryMetaResponse.fromRows(rows);
     }
 
     public List<HashTag> saveAllHashTag(List<String> tags) {

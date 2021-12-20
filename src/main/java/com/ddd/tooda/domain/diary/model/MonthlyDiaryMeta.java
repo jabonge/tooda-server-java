@@ -28,7 +28,7 @@ public class MonthlyDiaryMeta extends BaseEntity {
     @Column
     private Integer totalCount = 0;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

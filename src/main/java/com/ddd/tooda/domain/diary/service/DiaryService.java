@@ -94,8 +94,7 @@ public class DiaryService {
 
     @Transactional(readOnly = true)
     public List<MonthlyDiaryMetaResponse> findMonthlyDiaryMetasByYear(Long userId, Integer year) {
-        List<MonthlyDiaryMeta> metas = diaryQueryRepository.findMonthlyDiaryMetasByYear(userId, year);
-        return metas.stream().map(MonthlyDiaryMetaResponse::from).collect(Collectors.toList());
+        return diaryQueryRepository.findMonthlyDiaryMetasByYear(userId, year);
     }
 
 }
