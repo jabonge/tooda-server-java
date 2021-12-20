@@ -7,4 +7,5 @@ spring:
 
 logging:
   level:
+    com.amazonaws.util.EC2MetadataUtils: error
     org.springframework.jdbc.core: TRACE
