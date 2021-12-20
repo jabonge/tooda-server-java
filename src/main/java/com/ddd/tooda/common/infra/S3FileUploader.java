@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,11 +15,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Component
 public class S3FileUploader {
 
-    private final AmazonS3Client s3Client;
+
+    @Autowired
+    @Qualifier("S3Client")
+    private AmazonS3Client s3Client;
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
     @Value("${spring.profiles.active}")
