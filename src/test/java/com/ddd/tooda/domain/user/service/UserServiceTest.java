@@ -12,6 +12,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,7 +35,7 @@ class UserServiceTest {
         User newUser = userService.signUp(deviceId);
 
         Mockito.verify(userRepository, Mockito.times(1)).save(any());
-        Assertions.assertEquals(newUser.getDeviceId(), deviceId);
+        assertEquals(newUser.getDeviceId(), deviceId);
     }
 
     @Test
@@ -48,7 +50,7 @@ class UserServiceTest {
         User existUser = userService.signUp(deviceId);
 
         Mockito.verify(userRepository, Mockito.never()).save(any());
-        Assertions.assertEquals(existUser.getDeviceId(), deviceId);
+        assertEquals(existUser.getDeviceId(), deviceId);
 
     }
 }

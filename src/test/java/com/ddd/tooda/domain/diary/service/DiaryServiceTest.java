@@ -19,6 +19,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 class DiaryServiceTest {
@@ -46,8 +49,8 @@ class DiaryServiceTest {
     @DisplayName("올바르지 않은 파라미터")
     void remove_test1() {
 
-        Mockito.doReturn(null).when(diaryQueryRepository).findByUserIdAndDiaryId(userId, diaryId);
-        Assertions.assertThrows(BadRequestException.class, () -> diaryService.remove(userId, diaryId));
+        doReturn(null).when(diaryQueryRepository).findByUserIdAndDiaryId(userId, diaryId);
+        assertThrows(BadRequestException.class, () -> diaryService.remove(userId, diaryId));
     }
 
     @Test
@@ -60,10 +63,10 @@ class DiaryServiceTest {
                 MonthlyDiaryMeta.builder().userId(userId).year(now.getYear()).month(now.getMonthValue()).build();
         diary.setMonthlyDiaryMeta(monthlyDiaryMeta);
 
-        Mockito.doReturn(diary).when(diaryQueryRepository).findByUserIdAndDiaryId(userId, diaryId);
+        doReturn(diary).when(diaryQueryRepository).findByUserIdAndDiaryId(userId, diaryId);
         diaryService.remove(userId, diaryId);
 
-        Mockito.verify(monthlyDiaryMetaRepository, Mockito.times(1)).delete(monthlyDiaryMeta);
+        verify(monthlyDiaryMetaRepository, times(1)).delete(monthlyDiaryMeta);
 
     }
 
@@ -76,9 +79,9 @@ class DiaryServiceTest {
         monthlyDiaryMeta.increaseTotalCount();
         diary.setMonthlyDiaryMeta(monthlyDiaryMeta);
 
-        Mockito.doReturn(diary).when(diaryQueryRepository).findByUserIdAndDiaryId(userId, diaryId);
+        doReturn(diary).when(diaryQueryRepository).findByUserIdAndDiaryId(userId, diaryId);
         diaryService.remove(userId, diaryId);
 
-        Mockito.verify(monthlyDiaryMetaRepository, Mockito.times(1)).save(diary.getMonthlyDiaryMeta());
+        verify(monthlyDiaryMetaRepository, times(1)).save(diary.getMonthlyDiaryMeta());
     }
 }
