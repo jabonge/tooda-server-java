@@ -3,8 +3,6 @@ package com.ddd.tooda.common.infra;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,21 +16,19 @@ import java.util.stream.Collectors;
 @Component
 public class S3FileUploader {
 
-
-    @Autowired
     @Qualifier("S3Client")
-    private AmazonS3Client s3Client;
+    private final AmazonS3Client s3Client;
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
     @Value("${spring.profiles.active}")
     private String profile;
 
-    public String upload(MultipartFile file, String dirName) {
-        return putS3(file, dirName);
+    public S3FileUploader(AmazonS3Client s3Client) {
+        this.s3Client = s3Client;
     }
 
     public List<String> uploadAll(List<MultipartFile> files, String dirName) {
-        return files.stream().map(v -> upload(v,dirName)).collect(Collectors.toList());
+        return files.stream().map(v -> putS3(v,dirName)).collect(Collectors.toList());
     }
 
     private String putS3(MultipartFile multipartFile, String dirName) {
