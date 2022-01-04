@@ -12,7 +12,7 @@ public class ApiError {
     private final String message;
 
     ApiError(Throwable throwable, HttpStatus status) {
-        this(throwable.getMessage(),status);
+        this(throwable.getMessage() == null ? "INTERNAL_SERVER_ERROR" : throwable.getMessage(),status);
     }
 
     ApiError(String message, HttpStatus status) {
