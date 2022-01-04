@@ -18,9 +18,11 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/diary")
+@RequestMapping(DiaryController.DIARY)
 @RequiredArgsConstructor
 public class DiaryController {
+
+    public static final String DIARY = "/diary";
 
     private final DiaryService diaryService;
     private final S3FileUploader s3FileUploader;
@@ -42,13 +44,14 @@ public class DiaryController {
 
     @GetMapping("date")
     ResponseEntity<List<DiaryResponse>> findAllByDate(@LoginUserId Long userId,
-                                                      @Valid DiaryDto.FindAllByDateRequest req) {
-        List<DiaryResponse> responses = diaryService.findAllByDate(userId, req);
+                                                      @Valid DiaryDto.FindAllByDateRequest req,
+    @Valid NoOffsetPaginationDto noOffsetPaginationDto) {
+        List<DiaryResponse> responses = diaryService.findAllByDate(userId, req,noOffsetPaginationDto);
         return ResponseEntity.ok(responses);
     }
 
     @GetMapping("search")
-    ResponseEntity<List<DiaryResponse>> search(@LoginUserId Long userId, String q,
+    ResponseEntity<List<DiaryResponse>> search(@LoginUserId Long userId,@RequestParam String q,
                                                @Valid NoOffsetPaginationDto noOffsetPaginationDto) {
         List<DiaryResponse> responses = diaryService.search(userId, q, noOffsetPaginationDto);
         return ResponseEntity.ok(responses);
@@ -62,7 +65,7 @@ public class DiaryController {
 
     @GetMapping("{year}/metas")
     ResponseEntity<List<MonthlyDiaryMetaResponse>> findMonthlyDiaryMetasByYear(@LoginUserId Long userId,
-                                                                               @PathVariable("year") Integer year) {
+                                                                               @PathVariable int year) {
         List<MonthlyDiaryMetaResponse> responses = diaryService.findMonthlyDiaryMetasByYear(userId, year);
         return ResponseEntity.ok(responses);
     }
