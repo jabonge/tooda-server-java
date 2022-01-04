@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/stock")
+@RequestMapping(StockController.STOCK)
 @RequiredArgsConstructor
 public class StockController {
 
+    public static final String STOCK = "/stock";
     private final StockService stockService;
 
     @GetMapping("search")

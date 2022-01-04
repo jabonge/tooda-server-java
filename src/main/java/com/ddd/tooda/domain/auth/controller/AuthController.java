@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(AuthController.AUTH)
 @RequiredArgsConstructor
 public class AuthController {
 
+    public static final String AUTH = "/auth";
     private final AuthService authService;
 
     @PostMapping("/sign-up")
