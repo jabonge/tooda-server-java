@@ -20,13 +20,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
       log.error("Unauthorized Error : {}", authException.getMessage());
-//      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getLocalizedMessage());
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        OutputStream os = response.getOutputStream();
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(os, new UnAuthorizedException(authException.getMessage()));
-        os.flush();
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                authException.getLocalizedMessage());
     }
 }
