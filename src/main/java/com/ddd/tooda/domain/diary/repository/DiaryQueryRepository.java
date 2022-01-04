@@ -43,9 +43,9 @@ public class DiaryQueryRepository {
         return findAllDiaryByCondition(userId, noOffsetPaginationDto, null);
     }
 
-    public List<Diary> findAllByDate(Long userId, DiaryDto.FindAllByDateRequest req) {
+    public List<Diary> findAllByDate(Long userId, DiaryDto.FindAllByDateRequest req, NoOffsetPaginationDto noOffsetPaginationDto) {
         BooleanExpression expression = diary.createdAt.between(req.getStartTime(), req.getEndTime());
-        return findAllDiaryByCondition(userId, req.getNoOffsetPaginationDto(), expression);
+        return findAllDiaryByCondition(userId, noOffsetPaginationDto, expression);
     }
 
     public List<Diary> search(Long userId, String query, NoOffsetPaginationDto noOffsetPaginationDto) {
@@ -68,7 +68,7 @@ public class DiaryQueryRepository {
                 .fetch();
     }
 
-    public List<MonthlyDiaryMetaResponse> findMonthlyDiaryMetasByYear(Long userId, Integer year) {
+    public List<MonthlyDiaryMetaResponse> findMonthlyDiaryMetasByYear(Long userId, int year) {
         String sql = "select * from monthly_diary_meta as m " +
                 "inner join (select d1.sticker as sticker, d1.monthly_diary_meta_id as monthly_diary_meta_id from " +
                 "diary as d1 " +

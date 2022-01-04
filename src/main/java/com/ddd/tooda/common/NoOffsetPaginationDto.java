@@ -14,5 +14,5 @@ public class NoOffsetPaginationDto {
     private Long cursor;
     @Max(20)
     @Min(1)
-    private Integer limit = 20;
+    private int limit = 20;
 }

@@ -11,9 +11,9 @@ public class MonthlyDiaryMetaDto {
     @ToString
     public static class MonthlyDiaryMetaResponse {
         private Long id;
-        private Integer year;
-        private Integer month;
-        private Integer totalCount;
+        private int year;
+        private int month;
+        private int totalCount;
         private List<String> stickers = new ArrayList<>();
 
         public MonthlyDiaryMetaResponse(Long id, int year, int month, int totalCount, String sticker) {

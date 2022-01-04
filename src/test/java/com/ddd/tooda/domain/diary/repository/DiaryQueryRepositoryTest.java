@@ -77,10 +77,9 @@ class DiaryQueryRepositoryTest {
 
     @Test
     void findAllByDate() {
-        DiaryDto.FindAllByDateRequest req = new DiaryDto.FindAllByDateRequest(2021, 12,
-                new NoOffsetPaginationDto(null, 20));
+        DiaryDto.FindAllByDateRequest req = new DiaryDto.FindAllByDateRequest(2021, 12);
 
-        List<Diary> diaries = diaryQueryRepository.findAllByDate(user.getId(), req);
+        List<Diary> diaries = diaryQueryRepository.findAllByDate(user.getId(), req, new NoOffsetPaginationDto(null, 20));
         assertEquals(diaries.size(), 10);
 
         Diary diary = diaries.get(0);

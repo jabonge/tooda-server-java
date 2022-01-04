@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface MonthlyDiaryMetaRepository extends JpaRepository<MonthlyDiaryMeta, Long> {
 
-    Optional<MonthlyDiaryMeta> findFirstByUserAndYearAndMonth(User user, Integer year, Integer month);
+    Optional<MonthlyDiaryMeta> findFirstByUserAndYearAndMonth(User user, int year, int month);
 }

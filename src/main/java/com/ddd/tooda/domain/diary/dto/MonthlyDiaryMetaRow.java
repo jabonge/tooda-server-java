@@ -10,8 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MonthlyDiaryMetaRow {
     private Long id;
-    private Integer year;
-    private Integer month;
-    private Integer totalCount;
+    private int year;
+    private int month;
+    private int totalCount;
     private String sticker;
 }

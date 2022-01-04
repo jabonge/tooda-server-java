@@ -122,10 +122,9 @@ public class DiaryDto {
     @AllArgsConstructor
     public static class FindAllByDateRequest {
         @NotNull
-        private Integer year;
+        private int year;
         @NotNull
-        private Integer month;
-        private NoOffsetPaginationDto noOffsetPaginationDto;
+        private int month;
 
 
         public LocalDateTime getStartTime() {

@@ -19,14 +19,14 @@ public class MonthlyDiaryMeta extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private Integer year;
+    @Column(nullable = false)
+    private int year;
 
-    @Column
-    private Integer month;
+    @Column(nullable = false)
+    private int month;
 
-    @Column
-    private Integer totalCount = 0;
+    @Column(nullable = false)
+    private int totalCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -36,7 +36,7 @@ public class MonthlyDiaryMeta extends BaseEntity {
     private List<Diary> diaries = new ArrayList<>();
 
     @Builder
-    public MonthlyDiaryMeta(Integer year, Integer month, Long userId) {
+    public MonthlyDiaryMeta(int year, int month, Long userId) {
         this.year = year;
         this.month = month;
         this.user = new User(userId);

@@ -80,9 +80,9 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public List<DiaryResponse> findAllByDate(Long userId, DiaryDto.FindAllByDateRequest req) {
+    public List<DiaryResponse> findAllByDate(Long userId, DiaryDto.FindAllByDateRequest req, NoOffsetPaginationDto noOffsetPaginationDto) {
 
-        List<Diary> diaries = diaryQueryRepository.findAllByDate(userId, req);
+        List<Diary> diaries = diaryQueryRepository.findAllByDate(userId, req, noOffsetPaginationDto);
         return diaries.stream().map(DiaryResponse::from).collect(Collectors.toList());
     }
 
@@ -93,7 +93,7 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public List<MonthlyDiaryMetaResponse> findMonthlyDiaryMetasByYear(Long userId, Integer year) {
+    public List<MonthlyDiaryMetaResponse> findMonthlyDiaryMetasByYear(Long userId, int year) {
         return diaryQueryRepository.findMonthlyDiaryMetasByYear(userId, year);
     }
 
