@@ -13,9 +13,7 @@ services:
       - "3306:3306"
   app:
     container_name: tooda_spring
-    build:
-      dockerfile: Dockerfile
-      context: ./
+    image: tooda-app:latest
     ports:
       - "3000:8080"
     depends_on:
