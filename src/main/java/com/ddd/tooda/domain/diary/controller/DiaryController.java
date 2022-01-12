@@ -17,6 +17,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+import static com.ddd.tooda.domain.diary.dto.DiaryDto.*;
+
 @RestController
 @RequestMapping(DiaryController.DIARY)
 @RequiredArgsConstructor
@@ -30,30 +32,30 @@ public class DiaryController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<DiaryResponse> create(@LoginUserId Long userId,
-                                         @Valid @RequestBody DiaryDto.CreateDiaryRequest req) {
+                                         @Valid @RequestBody CreateDiaryRequest req) {
         DiaryResponse response = diaryService.createDiary(userId, req);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping()
-    ResponseEntity<List<DiaryResponse>> findAll(@LoginUserId Long userId,
+    ResponseEntity<NoOffsetDiaryResponses> findAll(@LoginUserId Long userId,
                                                 @Valid NoOffsetPaginationDto noOffsetPaginationDto) {
-        List<DiaryResponse> responses = diaryService.findAll(userId, noOffsetPaginationDto);
+        NoOffsetDiaryResponses responses = diaryService.findAll(userId, noOffsetPaginationDto);
         return ResponseEntity.ok(responses);
     }
 
     @GetMapping("date")
-    ResponseEntity<List<DiaryResponse>> findAllByDate(@LoginUserId Long userId,
-                                                      @Valid DiaryDto.FindAllByDateRequest req,
+    ResponseEntity<NoOffsetDiaryResponses> findAllByDate(@LoginUserId Long userId,
+                                                      @Valid FindAllByDateRequest req,
     @Valid NoOffsetPaginationDto noOffsetPaginationDto) {
-        List<DiaryResponse> responses = diaryService.findAllByDate(userId, req,noOffsetPaginationDto);
+        NoOffsetDiaryResponses responses = diaryService.findAllByDate(userId, req,noOffsetPaginationDto);
         return ResponseEntity.ok(responses);
     }
 
     @GetMapping("search")
-    ResponseEntity<List<DiaryResponse>> search(@LoginUserId Long userId,@RequestParam String q,
+    ResponseEntity<NoOffsetDiaryResponses> search(@LoginUserId Long userId,@RequestParam String q,
                                                @Valid NoOffsetPaginationDto noOffsetPaginationDto) {
-        List<DiaryResponse> responses = diaryService.search(userId, q, noOffsetPaginationDto);
+        NoOffsetDiaryResponses responses = diaryService.search(userId, q, noOffsetPaginationDto);
         return ResponseEntity.ok(responses);
     }
 

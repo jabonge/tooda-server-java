@@ -21,6 +21,8 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ddd.tooda.domain.diary.dto.DiaryDto.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +33,7 @@ public class DiaryService {
     private final DiaryQueryRepository diaryQueryRepository;
 
     @Transactional
-    public DiaryResponse createDiary(Long userId, DiaryDto.CreateDiaryRequest req) {
+    public DiaryResponse createDiary(Long userId, CreateDiaryRequest req) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         MonthlyDiaryMeta monthlyDiaryMeta =
                 monthlyDiaryMetaRepository.findFirstByUserAndYearAndMonth(new User(userId), now.getYear(),
@@ -74,22 +76,21 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public List<DiaryResponse> findAll(Long userId, NoOffsetPaginationDto noOffsetPaginationDto) {
+    public NoOffsetDiaryResponses findAll(Long userId, NoOffsetPaginationDto noOffsetPaginationDto) {
         List<Diary> diaries = diaryQueryRepository.findAll(userId, noOffsetPaginationDto);
-        return diaries.stream().map(DiaryResponse::from).collect(Collectors.toList());
+        return NoOffsetDiaryResponses.of(diaries, noOffsetPaginationDto.getLimit());
     }
 
     @Transactional(readOnly = true)
-    public List<DiaryResponse> findAllByDate(Long userId, DiaryDto.FindAllByDateRequest req, NoOffsetPaginationDto noOffsetPaginationDto) {
-
+    public NoOffsetDiaryResponses findAllByDate(Long userId, FindAllByDateRequest req, NoOffsetPaginationDto noOffsetPaginationDto) {
         List<Diary> diaries = diaryQueryRepository.findAllByDate(userId, req, noOffsetPaginationDto);
-        return diaries.stream().map(DiaryResponse::from).collect(Collectors.toList());
+        return NoOffsetDiaryResponses.of(diaries, noOffsetPaginationDto.getLimit());
     }
 
     @Transactional(readOnly = true)
-    public List<DiaryResponse> search(Long userId, String query, NoOffsetPaginationDto noOffsetPaginationDto) {
+    public NoOffsetDiaryResponses search(Long userId, String query, NoOffsetPaginationDto noOffsetPaginationDto) {
         List<Diary> diaries = diaryQueryRepository.search(userId, query, noOffsetPaginationDto);
-        return diaries.stream().map(DiaryResponse::from).collect(Collectors.toList());
+        return NoOffsetDiaryResponses.of(diaries, noOffsetPaginationDto.getLimit());
     }
 
     @Transactional(readOnly = true)

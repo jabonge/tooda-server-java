@@ -166,4 +166,21 @@ public class DiaryDto {
             );
         }
     }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    public static class NoOffsetDiaryResponses {
+        private Long cursor;
+        private List<DiaryResponse> notes;
+
+        public static NoOffsetDiaryResponses of(List<Diary> diaries, int limit) {
+            List<DiaryResponse> notes = diaries.stream().map(DiaryResponse::from).collect(Collectors.toList());
+            Long cursor = notes.size() < limit+1 ? null : notes.get(limit-1).getId();
+            if(cursor != null) {
+                notes.remove(limit);
+            }
+            return new NoOffsetDiaryResponses(cursor,notes);
+        }
+    }
 }

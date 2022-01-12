@@ -64,7 +64,7 @@ public class DiaryQueryRepository {
                 .leftJoin(diary.stocks, diaryStock).fetchJoin()
                 .leftJoin(diary.images, diaryImage).fetchJoin()
                 .orderBy(diary.id.desc())
-                .limit(noOffsetPaginationDto.getLimit())
+                .limit(noOffsetPaginationDto.getLimit()+1)
                 .fetch();
     }
 
