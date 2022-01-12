@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,11 +41,13 @@ class DiaryQueryRepositoryTest {
 
     private User user;
     private Long lastDiaryId;
+    private LocalDate localDate;
 
     @BeforeAll
     void setUp() {
         String deviceId = "ABCD_EFGWER_GWEERU_ABCD_EFGWER_GWEER";
         user = userService.signUp(deviceId);
+        localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
         for (int i = 0; i < 10; i++) {
             DiaryDto.CreateDiaryRequest req = new DiaryDto.CreateDiaryRequest("타이틀", "콘텐츠", Sticker.OMG,
                     new ArrayList<>(), Arrays.asList("https" +
@@ -77,7 +81,7 @@ class DiaryQueryRepositoryTest {
 
     @Test
     void findAllByDate() {
-        DiaryDto.FindAllByDateRequest req = new DiaryDto.FindAllByDateRequest(2021, 12);
+        DiaryDto.FindAllByDateRequest req = new DiaryDto.FindAllByDateRequest(localDate.getYear(), localDate.getMonthValue());
 
         List<Diary> diaries = diaryQueryRepository.findAllByDate(user.getId(), req, new NoOffsetPaginationDto(null, 20));
         assertEquals(diaries.size(), 10);
@@ -105,8 +109,7 @@ class DiaryQueryRepositoryTest {
 
     @Test
     void findMonthlyDiaryMetasByYear() {
-        List<MonthlyDiaryMetaResponse> responses = diaryQueryRepository.findMonthlyDiaryMetasByYear(user.getId(),2021);
-        assertEquals(responses.size(), 1);
+        List<MonthlyDiaryMetaResponse> responses = diaryQueryRepository.findMonthlyDiaryMetasByYear(user.getId(), localDate.getYear());
         assertEquals(responses.get(0).getStickers().size(), 3);
         assertEquals(responses.get(0).getStickers().get(0), Sticker.OMG.getName());
     }

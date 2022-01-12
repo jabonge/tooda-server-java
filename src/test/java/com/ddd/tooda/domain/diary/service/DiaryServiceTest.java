@@ -77,6 +77,7 @@ class DiaryServiceTest {
         MonthlyDiaryMeta monthlyDiaryMeta =
                 MonthlyDiaryMeta.builder().userId(userId).year(now.getYear()).month(now.getMonthValue()).build();
         monthlyDiaryMeta.increaseTotalCount();
+        monthlyDiaryMeta.increaseTotalCount();
         diary.setMonthlyDiaryMeta(monthlyDiaryMeta);
 
         doReturn(diary).when(diaryQueryRepository).findByUserIdAndDiaryId(userId, diaryId);
