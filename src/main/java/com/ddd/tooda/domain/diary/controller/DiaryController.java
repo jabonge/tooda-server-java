@@ -31,9 +31,23 @@ public class DiaryController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<DiaryResponse> create(@LoginUserId Long userId,
+    ResponseEntity<DiaryDetailResponse> create(@LoginUserId Long userId,
                                          @Valid @RequestBody CreateDiaryRequest req) {
-        DiaryResponse response = diaryService.createDiary(userId, req);
+        DiaryDetailResponse response = diaryService.createDiary(userId, req);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("{id}")
+    ResponseEntity<DiaryDetailResponse> findOne(@LoginUserId Long userId,
+                                          @PathVariable("id") Long diaryId) {
+        DiaryDetailResponse response = diaryService.findOne(userId, diaryId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("{id}")
+    ResponseEntity<DiaryDetailResponse> update(@LoginUserId Long userId,
+                                          @PathVariable("id") Long diaryId, @Valid @RequestBody CreateDiaryRequest req) {
+        DiaryDetailResponse response = diaryService.updateDiary(userId, diaryId, req);
         return ResponseEntity.ok(response);
     }
 

@@ -145,12 +145,35 @@ public class DiaryDto {
         private String title;
         private String content;
         private Sticker sticker;
+        private LocalDateTime createdAt;
+        private List<DiaryImageDto> images;
+
+        public static DiaryResponse from(Diary diary) {
+            return new DiaryResponse(diary.getId(), diary.getTitle(), diary.getContent(), diary.getSticker(), diary.getCreatedAt(),
+                    diary.getImages()
+                            .stream()
+                            .map(v -> DiaryImageDto.from(v))
+                            .collect(Collectors.toList())
+                    );
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    public static class DiaryDetailResponse {
+        private Long id;
+        private String title;
+        private String content;
+        private Sticker sticker;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
         private List<DiaryStockDto> stocks;
         private List<DiaryImageDto> images;
         private List<DiaryLinkDto> links;
 
-        public static DiaryResponse from(Diary diary) {
-            return new DiaryResponse(diary.getId(), diary.getTitle(), diary.getContent(), diary.getSticker(),
+        public static DiaryDetailResponse from(Diary diary) {
+            return new DiaryDetailResponse(diary.getId(), diary.getTitle(), diary.getContent(), diary.getSticker(), diary.getCreatedAt(), diary.getUpdatedAt(),
                     diary.getStocks()
                             .stream()
                             .map(s -> DiaryStockDto.from(s))

@@ -43,6 +43,17 @@ public class DiaryQueryRepository {
         return findAllDiaryByCondition(userId, noOffsetPaginationDto, null);
     }
 
+    public Diary findOne(Long userId, Long diaryId) {
+        return jpaQueryFactory.selectFrom(diary).where(
+                        diary.user.id.eq(userId),
+                        diary.id.eq(diaryId)
+                )
+                .leftJoin(diary.links, diaryLink).fetchJoin()
+                .leftJoin(diary.stocks, diaryStock).fetchJoin()
+                .leftJoin(diary.images, diaryImage).fetchJoin()
+                .fetchOne();
+    }
+
     public List<Diary> findAllByDate(Long userId, DiaryDto.FindAllByDateRequest req, NoOffsetPaginationDto noOffsetPaginationDto) {
         BooleanExpression expression = diary.createdAt.between(req.getStartTime(), req.getEndTime());
         return findAllDiaryByCondition(userId, noOffsetPaginationDto, expression);
@@ -60,8 +71,6 @@ public class DiaryQueryRepository {
                         ltCursorId(noOffsetPaginationDto.getCursor()),
                         booleanExpression
                 )
-                .leftJoin(diary.links, diaryLink).fetchJoin()
-                .leftJoin(diary.stocks, diaryStock).fetchJoin()
                 .leftJoin(diary.images, diaryImage).fetchJoin()
                 .orderBy(diary.id.desc())
                 .limit(noOffsetPaginationDto.getLimit()+1)

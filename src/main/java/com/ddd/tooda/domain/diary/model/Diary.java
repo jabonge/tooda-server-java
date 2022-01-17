@@ -74,29 +74,47 @@ public class Diary extends BaseEntity {
         this.monthlyDiaryMeta = monthlyDiaryMeta;
     }
     public void setHashTags(List<HashTag> hashTags) {
-        this.hashTags = hashTags;
+            this.hashTags.addAll(hashTags);
     }
 
     private void setImages(List<DiaryImage> images) {
         if (images != null) {
-            images.forEach(v -> v.setDiary(this));
-            this.images = new HashSet<>(images);
+            this.images.clear();
+            images.forEach(v -> {
+                v.setDiary(this);
+                this.images.add(v);
+            });
         }
     }
 
     private void setStocks(List<DiaryStock> stocks) {
         if(stocks != null) {
-            stocks.forEach(v -> v.setDiary(this));
-            this.stocks = new HashSet<>(stocks);
+            this.stocks.clear();
+            stocks.forEach(v -> {
+                v.setDiary(this);
+                this.stocks.add(v);
+            });
         }
 
     }
 
     private void setLinks(List<DiaryLink> links) {
         if(links != null) {
-            links.forEach(v -> v.setDiary(this));
-            this.links = new HashSet<>(links);
+            this.links.clear();
+            links.forEach(v -> {
+                v.setDiary(this);
+                this.links.add(v);
+            });
         }
+    }
+
+    public void merge(Diary diary) {
+        this.title = diary.getTitle();
+        this.content = diary.getContent();
+        this.sticker = diary.getSticker();
+        setStocks(new ArrayList<>(diary.getStocks()));
+        setImages(new ArrayList<>(diary.getImages()));
+        setLinks(new ArrayList<>(diary.getLinks()));
     }
 
 

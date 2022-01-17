@@ -2,8 +2,6 @@ package com.ddd.tooda.domain.diary.service;
 
 import com.ddd.tooda.common.NoOffsetPaginationDto;
 import com.ddd.tooda.common.exception.BadRequestException;
-import com.ddd.tooda.domain.diary.dto.DiaryDto;
-import com.ddd.tooda.domain.diary.dto.DiaryDto.DiaryResponse;
 import com.ddd.tooda.domain.diary.dto.MonthlyDiaryMetaDto.MonthlyDiaryMetaResponse;
 import com.ddd.tooda.domain.diary.model.Diary;
 import com.ddd.tooda.domain.diary.model.HashTag;
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ddd.tooda.domain.diary.dto.DiaryDto.*;
 
@@ -33,7 +30,7 @@ public class DiaryService {
     private final DiaryQueryRepository diaryQueryRepository;
 
     @Transactional
-    public DiaryResponse createDiary(Long userId, CreateDiaryRequest req) {
+    public DiaryDetailResponse createDiary(Long userId, CreateDiaryRequest req) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         MonthlyDiaryMeta monthlyDiaryMeta =
                 monthlyDiaryMetaRepository.findFirstByUserAndYearAndMonth(new User(userId), now.getYear(),
@@ -57,7 +54,23 @@ public class DiaryService {
         monthlyDiaryMetaRepository.save(monthlyDiaryMeta);
         diaryRepository.save(diary);
 
-        return DiaryResponse.from(diary);
+        return DiaryDetailResponse.from(diary);
+    }
+
+    @Transactional
+    public DiaryDetailResponse updateDiary(Long userId, Long diaryId, CreateDiaryRequest req) {
+
+        Diary diary = diaryQueryRepository.findOne(userId,diaryId);
+        diary.merge(req.toEntity(userId));
+
+        List<String> extractTags = req.getHashTags();
+        if(extractTags != null) {
+            List<HashTag> tags = diaryQueryRepository.saveAllHashTag(req.getHashTags());
+            diary.setHashTags(tags);
+        }
+
+        diaryRepository.save(diary);
+        return DiaryDetailResponse.from(diary);
     }
 
     @Transactional
@@ -73,6 +86,12 @@ public class DiaryService {
             diary.getMonthlyDiaryMeta().decreaseTotalCount();
             monthlyDiaryMetaRepository.save(diary.getMonthlyDiaryMeta());
         }
+    }
+
+    @Transactional(readOnly = true)
+    public DiaryDetailResponse findOne(Long userId, Long diaryId) {
+        Diary diary = diaryQueryRepository.findOne(userId,diaryId);
+        return DiaryDetailResponse.from(diary);
     }
 
     @Transactional(readOnly = true)
