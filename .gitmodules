@@ -1,0 +1,4 @@
+[submodule "tooda-secret"]
+	path = tooda-secret
+	url = https://github.com/jabonge/tooda-secret.git
+	branch = main

@@ -58,3 +58,11 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+processResources.dependsOn('copySecret')
+
+task copySecret(type: Copy) {
+    from 'tooda-secret/*.yml'
+    into 'src/main/resources'
+}
+
