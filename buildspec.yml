@@ -14,6 +14,9 @@ phases:
       - chmod 600 ~/.ssh/id_rsa
       - ssh-keygen -F github.com || ssh-keyscan github.com >>~/.ssh/known_hosts
       - git config --global url."git@github.com:".insteadOf "https://github.com/"
+      - git init
+      - git remote add origin git@github.com:jabonge/tooda-secret.git
+      - git fetch
       - git submodule init
       - git submodule update --recursive
       - echo Logging in to Amazon ECR...
