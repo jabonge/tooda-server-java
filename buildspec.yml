@@ -10,6 +10,7 @@ phases:
       - echo Pooling Git Submodules...
       - mkdir -p ~/.ssh
       - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
+      - echo "$GITHUB_SSH_KEY"
       - chmod 600 ~/.ssh/id_rsa
       - eval "$(ssh-agent -s)"
       - ssh-add ~/.ssh/id_rsa
