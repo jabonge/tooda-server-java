@@ -1,3 +1,4 @@
+#!/bin/bash
 
 ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com/tooda-test:latest
 # ecr pull
@@ -11,5 +12,5 @@ then
   docker rm tooda_spring
 fi
 
-docker-compose up --build -d
+docker-compose up -d --build
 docker image prune -f
