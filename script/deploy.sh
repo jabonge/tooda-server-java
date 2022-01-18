@@ -7,8 +7,8 @@ docker tag "$ECR_REPOSITORY" tooda-app
 
 if [ "$( docker container inspect -f '{{.State.Status}}' tooda_spring )" == "running" ]
 then
-  docker stop app
-  docker rm app
+  docker stop tooda_spring
+  docker rm tooda_spring
 fi
 
 docker-compose up --build -d
