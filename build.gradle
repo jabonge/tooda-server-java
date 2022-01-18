@@ -62,7 +62,7 @@ test {
 processResources.dependsOn('copySecret')
 
 task copySecret(type: Copy) {
-    from 'tooda-secret/*.yml'
+    from 'tooda-secret'
     into 'src/main/resources'
 }
 
