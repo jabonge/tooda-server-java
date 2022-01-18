@@ -1,8 +1,21 @@
 version: 0.2
 
+env:
+  parameter-store:
+    GITHUB_SSH_KEY: tooda-submodule-ssh-key
+
 phases:
   pre_build:
     commands:
+      - echo Pooling Git Submodules...
+      - mkdir -p ~/.ssh
+      - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
+      - chmod 600 ~/.ssh/id_rsa
+      - eval "$(ssh-agent -s)"
+      - ssh-add ~/.ssh/id_rsa
+      - git config --global url.git@github.com:jabonge/tooda-secret.git
+      - git submodule init
+      - git submodule update --recursive
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
   build:
