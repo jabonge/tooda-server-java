@@ -66,12 +66,11 @@ jobs:
 
       - name: Upload to S3
         run: aws s3 cp --region ap-northeast-2 \
-              --acl private \
-              ./tooda.zip s3://codepipeline-ap-northeast-2-226814506530/
+              ./tooda.zip s3://tooda-deploy/tooda.zip
 
       - name: Code Deploy
         run: aws deploy create-deployment \
               --application-name tooda-codedeploy \
               --deployment-config-name CodeDeployDefault.OneAtATime \
               --deployment-group-name tooda-deploy-group \
-              --s3-location bucket=codepipeline-ap-northeast-2-226814506530, bundleType=zip, key=tooda.zip
+              --s3-location bucket=tooda-deploy, bundleType=zip, key=tooda.zip
