@@ -61,7 +61,7 @@ jobs:
           mkdir deploy
           mv appspec.yml ./deploy
           mv docker-compose.yml ./deploy
-          mv ./script/deploy.sh ./deploy
+          mv /script/deploy.sh ./deploy
           zip -r tooda.zip ./deploy/*
 
       - name: Upload to S3
