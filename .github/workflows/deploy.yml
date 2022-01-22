@@ -66,7 +66,7 @@ jobs:
 
       - name: Upload to S3
         run: aws s3 cp --region ap-northeast-2 \
-              ./tooda.zip s3://tooda-deploy/tooda.zip
+              tooda.zip s3://tooda-deploy/tooda.zip
 
       - name: Code Deploy
         run: aws deploy create-deployment \
