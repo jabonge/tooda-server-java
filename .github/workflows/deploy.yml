@@ -59,9 +59,9 @@ jobs:
       - name: Zip resource
         run: |
           mkdir deploy
-          mv appspec.yml ./deploy
-          mv docker-compose.yml ./deploy
-          mv /script/deploy.sh ./deploy
+          cp appspec.yml ./deploy
+          cp docker-compose.yml ./deploy
+          cp script/deploy.sh ./deploy
           zip -r tooda.zip ./deploy/*
 
       - name: Upload to S3
