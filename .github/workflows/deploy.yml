@@ -63,7 +63,6 @@ jobs:
           cp docker-compose.yml ./deploy
           cp script/deploy.sh ./deploy
           zip -r tooda.zip ./deploy/*
-          echo $(basename ./*.zip)
 
       - name: Upload to S3
         run: |
@@ -76,4 +75,4 @@ jobs:
               --application-name tooda-codedeploy \
               --deployment-config-name CodeDeployDefault.OneAtATime \
               --deployment-group-name tooda-deploy-group \
-              --s3-location bucket=tooda-deploy, bundleType=zip, key=tooda.zip
+              --s3-location bucket=tooda-deploy,bundleType=zip,key=tooda.zip
