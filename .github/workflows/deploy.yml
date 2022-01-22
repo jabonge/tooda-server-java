@@ -66,11 +66,13 @@ jobs:
           echo $(basename ./*.zip)
 
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 \
+        run: |
+            aws s3 cp --region ap-northeast-2 \
               ./tooda.zip s3://tooda-deploy/
 
       - name: Code Deploy
-        run: aws deploy create-deployment \
+        run: |
+            aws deploy create-deployment \
               --application-name tooda-codedeploy \
               --deployment-config-name CodeDeployDefault.OneAtATime \
               --deployment-group-name tooda-deploy-group \
