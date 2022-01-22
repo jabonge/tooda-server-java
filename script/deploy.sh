@@ -10,5 +10,8 @@ if [ "$( docker container inspect -f '{{.State.Status}}' tooda_spring )" == "run
   docker rm tooda_spring
 fi
 
+PROJECT_PATH=/home/ec2-user/tooda
+cd ${PROJECT_PATH}
+
 docker-compose up -d --build
 docker image prune -f
