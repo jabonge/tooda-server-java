@@ -30,7 +30,7 @@ public class TokenProvider {
 
         return Jwts.builder().setSubject(Long.toString(userId))
                 .setIssuedAt(now)
-                .setExpiration(expiryDate)
+//                .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512,secretKey)
                 .compact();
     }
