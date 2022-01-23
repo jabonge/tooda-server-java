@@ -74,7 +74,7 @@ public class DiaryController {
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity remove(@LoginUserId Long userId, @PathVariable("id") Long diaryId) {
+    ResponseEntity<Void> remove(@LoginUserId Long userId, @PathVariable("id") Long diaryId) {
         diaryService.remove(userId, diaryId);
         return ResponseEntity.ok().build();
     }
