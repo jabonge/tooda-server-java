@@ -7,6 +7,7 @@ import com.ddd.tooda.domain.diary.model.Diary;
 import com.ddd.tooda.domain.diary.model.HashTag;
 import com.ddd.tooda.domain.diary.model.type.Sticker;
 import com.ddd.tooda.domain.diary.service.DiaryService;
+import com.ddd.tooda.domain.user.model.SocialName;
 import com.ddd.tooda.domain.user.model.User;
 import com.ddd.tooda.domain.user.service.UserService;
 import org.junit.jupiter.api.*;
@@ -45,12 +46,12 @@ class DiaryQueryRepositoryTest {
 
     @BeforeAll
     void setUp() {
-        String deviceId = "ABCD_EFGWER_GWEERU_ABCD_EFGWER_GWEER";
-        user = userService.signUp(deviceId);
+        String socialId = "wwlkfjwlekjfwef";
+        user = userService.signUpOrLogin(SocialName.APPLE,socialId);
         localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
         for (int i = 0; i < 10; i++) {
             DiaryDto.CreateDiaryRequest req = new DiaryDto.CreateDiaryRequest("타이틀", "콘텐츠", Sticker.OMG,
-                    new ArrayList<>(), Arrays.asList("https" +
+                    new ArrayList<>(), List.of("https" +
                     "://tooda-test.s3.ap-northeast-2.amazonaws.com/1622123707242.jpeg"), new ArrayList<>());
             lastDiaryId = diaryService.createDiary(user.getId(), req).getId();
         }
