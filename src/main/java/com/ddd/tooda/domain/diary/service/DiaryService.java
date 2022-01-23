@@ -61,6 +61,9 @@ public class DiaryService {
     public DiaryDetailResponse updateDiary(Long userId, Long diaryId, CreateDiaryRequest req) {
 
         Diary diary = diaryQueryRepository.findOne(userId,diaryId);
+        if (diary == null) {
+            throw new BadRequestException();
+        }
         diary.merge(req.toEntity(userId));
 
         List<String> extractTags = req.getHashTags();
