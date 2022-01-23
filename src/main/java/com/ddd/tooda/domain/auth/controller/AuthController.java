@@ -17,10 +17,10 @@ public class AuthController {
     public static final String AUTH = "/auth";
     private final AuthService authService;
 
-    @PostMapping("/sign-up")
+    @PostMapping("/sign-up/apple")
     @ResponseBody
-    ResponseEntity<AuthDto.SignUpResponse> signUp(@Valid @RequestBody AuthDto.SignUpRequest request) {
-        AuthDto.SignUpResponse response = authService.signUp(request);
+    ResponseEntity<AuthDto.SignUpResponse> appleSignUpOrLogin(@Valid @RequestBody AuthDto.AppleSignUpRequest request) {
+        AuthDto.SignUpResponse response = authService.appleSignUpOrLogin(request);
         return ResponseEntity.ok(response);
     }
 

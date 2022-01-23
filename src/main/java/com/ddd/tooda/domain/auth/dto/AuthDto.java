@@ -10,7 +10,6 @@ public class AuthDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class SignUpResponse {
         private String accessToken;
-        private String refreshToken;
     }
 
     @Getter
@@ -25,9 +24,9 @@ public class AuthDto {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @EqualsAndHashCode
-    public static class SignUpRequest {
-        @Length(min = 36, max = 40, message = "올바른 DeviceId가 아닙니다.")
-        private String deviceId;
+    public static class AppleSignUpRequest {
+        private String identityToken;
+
     }
 
     @Getter
