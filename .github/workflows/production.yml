@@ -5,11 +5,11 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Deploy Spring boot on EC2
+name: Deploy Spring boot on Elastic Beanstalk
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -36,8 +36,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_PROD_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_PROD_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
       - name: Login to Amazon ECR
@@ -48,31 +48,30 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: tooda-test
+          ECR_REPOSITORY: tooda
           IMAGE_TAG: latest
         run: |
-          docker build --build-arg PROFILE=dev -t $ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --build-arg PROFILE=prod -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
 
-      - name: Zip resource
-        run: |
-          mkdir deploy
-          cp appspec.yml ./deploy
-          cp docker-compose.yml ./deploy
-          cp script/deploy.sh ./deploy
-          zip -r tooda.zip ./deploy/*
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYYMMDD_HH-mm-ss
+          utcOffset: "+09:00"
 
-      - name: Upload to S3
-        run: |
-            aws s3 cp --region ap-northeast-2 \
-              ./tooda.zip s3://tooda-deploy/
 
-      - name: Code Deploy
-        run: |
-            aws deploy create-deployment \
-              --application-name tooda-codedeploy \
-              --deployment-config-name CodeDeployDefault.OneAtATime \
-              --deployment-group-name tooda-deploy-group \
-              --s3-location bucket=tooda-deploy,bundleType=zip,key=tooda.zip
+      - name: Beanstalk Deploy
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_PROD_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_PROD_ACCESS_KEY }}
+          application_name: tooda
+          environment_name: Tooda-env
+          version_label: deploy-${{steps.current-time.outputs.formattedTime}}
+          region: ap-northeast-2
+          deployment_package: .ebextensions/Dockerrun.aws.json
+          wait_for_environment_recovery: 200

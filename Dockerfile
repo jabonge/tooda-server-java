@@ -1,6 +1,6 @@
 FROM openjdk:11-jdk
 
-ENV PROFILE dev
+ARG PROFILE
 
 COPY build/libs/tooda-0.0.1-SNAPSHOT.jar app.jar
 
