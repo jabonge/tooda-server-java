@@ -41,5 +41,3 @@ application-*.yml
 ### Docker ###
 docker/
 
-### secret file ###
-tooda-secret/
