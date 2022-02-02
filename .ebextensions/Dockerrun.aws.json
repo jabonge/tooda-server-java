@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "$AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com/tooda:latest",
+    "Name": "103714593086.dkr.ecr.ap-northeast-2.amazonaws.com/tooda:latest",
     "Update": "true"
   },
   "Ports": [
