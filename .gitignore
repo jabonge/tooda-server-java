@@ -42,4 +42,4 @@ application-*.yml
 docker/
 
 ### secret file ###
-submodule/
+tooda-secret/
