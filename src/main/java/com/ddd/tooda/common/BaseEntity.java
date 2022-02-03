@@ -24,5 +24,6 @@ public class BaseEntity {
 
     @LastModifiedDate
     @Column(columnDefinition = "datetime(6) default now(6)", nullable = false)
-    private LocalDateTime updatedAt;
+    protected LocalDateTime updatedAt;
+
 }

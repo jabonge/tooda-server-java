@@ -2,6 +2,7 @@ package com.ddd.tooda.domain.diary.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +15,17 @@ public class MonthlyDiaryMetaDto {
         private int year;
         private int month;
         private int totalCount;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
         private List<String> stickers = new ArrayList<>();
 
-        public MonthlyDiaryMetaResponse(Long id, int year, int month, int totalCount, String sticker) {
+        public MonthlyDiaryMetaResponse(Long id, int year, int month, int totalCount, String sticker, LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.id = id;
             this.year = year;
             this.month = month;
             this.totalCount = totalCount;
+            this.createdAt = createdAt;
+            this.updatedAt = updatedAt;
             this.stickers.add(sticker);
         }
 
@@ -40,7 +45,7 @@ public class MonthlyDiaryMetaDto {
         }
 
         private static MonthlyDiaryMetaResponse fromRow(MonthlyDiaryMetaRow row) {
-            return new MonthlyDiaryMetaResponse(row.getId(),row.getYear(),row.getMonth(), row.getTotalCount(), row.getSticker());
+            return new MonthlyDiaryMetaResponse(row.getId(),row.getYear(),row.getMonth(), row.getTotalCount(), row.getSticker(), row.getCreatedAt(), row.getUpdatedAt());
         }
 
     }

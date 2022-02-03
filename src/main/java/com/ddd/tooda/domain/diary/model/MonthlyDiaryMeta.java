@@ -5,6 +5,7 @@ import com.ddd.tooda.domain.user.model.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +55,10 @@ public class MonthlyDiaryMeta extends BaseEntity {
     public void addDiary(Diary diary) {
         diaries.add(diary);
         diary.setMonthlyDiaryMeta(this);
+    }
+
+    public void setUpdatedAtToNow() {
+        this.updatedAt = LocalDateTime.now();
     }
 
 }

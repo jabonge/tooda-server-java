@@ -72,6 +72,8 @@ public class DiaryService {
             diary.setHashTags(tags);
         }
 
+        diary.getMonthlyDiaryMeta().setUpdatedAtToNow();
+        monthlyDiaryMetaRepository.save(diary.getMonthlyDiaryMeta());
         diaryRepository.save(diary);
         return DiaryDetailResponse.from(diary);
     }
