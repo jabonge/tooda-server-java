@@ -1,6 +1,5 @@
 package com.ddd.tooda.domain.diary.dto;
 
-import com.ddd.tooda.common.NoOffsetPaginationDto;
 import com.ddd.tooda.domain.diary.model.*;
 import com.ddd.tooda.domain.diary.model.type.ChangeType;
 import com.ddd.tooda.domain.diary.model.type.Sticker;
@@ -109,11 +108,12 @@ public class DiaryDto {
     @AllArgsConstructor
     public static class DiaryImageDto {
         private Long id;
-        @NotBlank
         private String image;
+        private int width;
+        private int height;
 
         public static DiaryImageDto from(DiaryImage image) {
-            return new DiaryImageDto(image.getId(), image.getImage());
+            return new DiaryImageDto(image.getId(), image.getImage(), image.getWidth(), image.getHeight());
         }
     }
 
