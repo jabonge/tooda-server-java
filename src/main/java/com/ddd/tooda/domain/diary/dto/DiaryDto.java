@@ -6,6 +6,7 @@ import com.ddd.tooda.domain.diary.model.type.Sticker;
 import com.ddd.tooda.util.HashtagUtil;
 import com.ddd.tooda.util.OpenGraphUtil;
 import com.ddd.tooda.util.OpenGraphUtil.OGResponse;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -145,6 +146,7 @@ public class DiaryDto {
         private String title;
         private String content;
         private Sticker sticker;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
         private LocalDateTime createdAt;
         private List<DiaryImageDto> images;
 
@@ -166,7 +168,9 @@ public class DiaryDto {
         private String title;
         private String content;
         private Sticker sticker;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
         private LocalDateTime createdAt;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
         private LocalDateTime updatedAt;
         private List<DiaryStockDto> stocks;
         private List<DiaryImageDto> images;

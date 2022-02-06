@@ -10,10 +10,7 @@ import java.time.ZoneId;
 import java.util.Optional;
 
 @Configuration
-@EnableJpaAuditing(dateTimeProviderRef = "utcDateTimeProvider")
+@EnableJpaAuditing
 public class JpaConfig {
-    @Bean
-    public DateTimeProvider utcDateTimeProvider() {
-        return () -> Optional.of(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
-    }
+
 }

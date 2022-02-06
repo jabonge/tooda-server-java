@@ -1,5 +1,6 @@
 package com.ddd.tooda.domain.diary.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,9 @@ public class MonthlyDiaryMetaDto {
         private int year;
         private int month;
         private int totalCount;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
         private LocalDateTime createdAt;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
         private LocalDateTime updatedAt;
         private List<String> stickers = new ArrayList<>();
 
